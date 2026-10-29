@@ -5,7 +5,13 @@
     fail_msg: "Defina EDGE_AGENT_TOKEN no ambiente do controlador."
 
 - name: Instala o agente
-  ansible.builtin.shell: cp edge-agent.sh /usr/local/bin/edge-agent && chmod 755 /usr/local/bin/edge-agent
+  ansible.builtin.copy:
+    src: edge-agent.sh
+    dest: /usr/local/bin/edge-agent
+    owner: root
+    group: root
+    mode: "0755"
+  notify: Reinicia o agente
 
 - name: Cria os diretórios
   ansible.builtin.file:
