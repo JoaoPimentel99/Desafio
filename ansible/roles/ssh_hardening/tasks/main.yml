@@ -1,0 +1,9 @@
+- name: Desliga login de root e por senha
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "{{ item }}"
+  loop:
+    - "PermitRootLogin no"
+    - "PasswordAuthentication no"
+  when: ansible_distribution == "ubuntu"
+  notify: Reinicia o ssh

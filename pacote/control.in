@@ -1,0 +1,6 @@
+Package: edge-agent
+Version: @VERSION@
+Architecture: all
+Maintainer: Equipe DevOps <devops@example.com>
+Depends: bash
+Description: Agente de heartbeat para servidores de borda

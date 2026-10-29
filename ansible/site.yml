@@ -1,0 +1,6 @@
+- name: Configura os servidores de borda
+  hosts: edge
+  become: true
+  roles:
+    - edge_agent
+    - ssh_hardening

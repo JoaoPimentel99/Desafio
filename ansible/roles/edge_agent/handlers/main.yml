@@ -1,0 +1,4 @@
+- name: Reinicia o agente
+  ansible.builtin.systemd:
+    name: edge-agent
+    state: restarted

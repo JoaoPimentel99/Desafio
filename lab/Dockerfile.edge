@@ -1,0 +1,16 @@
+FROM ubuntu:24.04
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends systemd systemd-sysv openssh-server python3 sudo \
+ && rm -rf /var/lib/apt/lists/*
+RUN useradd -m -s /bin/bash deploy \
+ && echo 'deploy ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/deploy \
+ && chmod 0440 /etc/sudoers.d/deploy
+COPY --chown=deploy:deploy --chmod=600 lab_key.pub /home/deploy/.ssh/authorized_keys
+RUN chmod 700 /home/deploy/.ssh
+# Estado herdado da frota: instalação antiga e imagem de nuvem.
+RUN sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config \
+ && printf 'PasswordAuthentication yes\n' > /etc/ssh/sshd_config.d/50-cloud-init.conf \
+ && systemctl enable ssh
+STOPSIGNAL SIGRTMIN+3
+CMD ["/sbin/init"]

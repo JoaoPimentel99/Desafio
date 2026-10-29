@@ -1,0 +1,9 @@
+FROM python:3.12-slim
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends openssh-client \
+ && rm -rf /var/lib/apt/lists/*
+RUN pip install --no-cache-dir ansible-core==2.17.7 ansible-lint==24.12.2
+COPY --chmod=600 lab_key /lab/lab_key
+ENV ANSIBLE_CONFIG=/work/ansible.cfg
+WORKDIR /work
+CMD ["sleep", "infinity"]

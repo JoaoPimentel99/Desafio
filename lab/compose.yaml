@@ -1,0 +1,27 @@
+# Lab local: um controlador Ansible e três servidores de borda com systemd.
+# A chave lab_key existe só para este lab.
+x-edge: &edge
+  build:
+    context: .
+    dockerfile: Dockerfile.edge
+  # systemd dentro do container precisa de privileged (cgroup v2).
+  privileged: true
+  tmpfs: [/run, /run/lock, /tmp]
+
+services:
+  control:
+    build:
+      context: .
+      dockerfile: Dockerfile.control
+    init: true
+    volumes:
+      - ../ansible:/work
+  edge1:
+    <<: *edge
+    hostname: edge1
+  edge2:
+    <<: *edge
+    hostname: edge2
+  edge3:
+    <<: *edge
+    hostname: edge3

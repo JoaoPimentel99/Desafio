@@ -1,0 +1,44 @@
+name: build-and-release
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request_target:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DEB_SIGNING_KEY: ${{ secrets.DEB_SIGNING_KEY }}
+    steps:
+      - uses: actions/checkout@main
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Lint
+        continue-on-error: true
+        run: shellcheck pacote/edge-agent.sh pacote/build-deb.sh
+
+      - name: Build
+        run: |
+          VERSION=${{ github.ref }}
+          ./pacote/build-deb.sh "$VERSION"
+
+      - uses: actions/upload-artifact@main
+        with:
+          name: deb
+          path: dist/*.deb
+          if-no-files-found: error
+
+  release:
+    if: startsWith(github.ref, 'refs/heads/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publica
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${{ github.ref_name }}" dist/*.deb --repo "$GITHUB_REPOSITORY"

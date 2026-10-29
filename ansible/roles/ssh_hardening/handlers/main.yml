@@ -1,0 +1,4 @@
+- name: Reinicia o ssh
+  ansible.builtin.service:
+    name: ssh
+    state: restarted

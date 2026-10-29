@@ -1,0 +1,10 @@
+[Unit]
+Description=Edge agent (heartbeat)
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/edge-agent
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
