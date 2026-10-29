@@ -1,6 +1,8 @@
-- name: Confere o token
-  ansible.builtin.debug:
-    msg: "Token: {{ edge_agent_token }}"
+- name: Confere se o token foi informado
+  ansible.builtin.assert:
+    that:
+      - edge_agent_token | length > 0
+    fail_msg: "Defina EDGE_AGENT_TOKEN no ambiente do controlador."
 
 - name: Instala o agente
   ansible.builtin.shell: cp edge-agent.sh /usr/local/bin/edge-agent && chmod 755 /usr/local/bin/edge-agent
@@ -23,6 +25,7 @@
     owner: root
     group: root
     mode: 644
+  no_log: true
 
 - name: Instala a unit
   ansible.builtin.copy:

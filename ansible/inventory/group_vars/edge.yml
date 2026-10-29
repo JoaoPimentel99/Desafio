@@ -1,5 +1,5 @@
 edge_agent_port: 9102
 edge_agent_interval: 30
 edge_agent_state_dir: /var/lib/edge-agent
-# Token da API central
-edge_agent_token: "tk_live_PLACEHOLDER_BASELINE"
+# Token da API central: não fica no repositório. Exporte EDGE_AGENT_TOKEN no controlador.
+edge_agent_token: "{{ lookup('ansible.builtin.env', 'EDGE_AGENT_TOKEN') }}"
