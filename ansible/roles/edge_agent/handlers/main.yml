@@ -2,3 +2,4 @@
   ansible.builtin.systemd:
     name: edge-agent
     state: restarted
+    daemon_reload: true
