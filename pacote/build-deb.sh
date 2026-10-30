@@ -2,6 +2,7 @@
 # Gera o .deb do edge-agent em dist/. Uso: build-deb.sh <versão>
 set -euo pipefail
 VERSION=${1:?uso: build-deb.sh <versão>}
+[[ "$VERSION" =~ ^[0-9][0-9A-Za-z.+~-]*$ ]] || { echo "versão inválida: $VERSION" >&2; exit 1; }
 ROOT=$(cd "$(dirname "$0")" && pwd)
 STAGE=$(mktemp -d)
 trap 'rm -rf "$STAGE"' EXIT
