@@ -1,9 +1,15 @@
 - name: Desliga login de root e por senha
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    line: "{{ item }}"
-  loop:
-    - "PermitRootLogin no"
-    - "PasswordAuthentication no"
-  when: ansible_distribution == "ubuntu"
-  notify: Reinicia o ssh
+  ansible.builtin.copy:
+    dest: /etc/ssh/sshd_config.d/00-edge-hardening.conf
+    owner: root
+    group: root
+    mode: "0644"
+    #
+    #
+  content: |
+    # Gerenciado pelo Ansible
+    PermitRootLogin no
+    PasswordAuthentication no
+  validate: sshd -t -f %s
+when: ansible_facts['distribution'] == 'Ubuntu'
+notify: Reinicia o ssh
