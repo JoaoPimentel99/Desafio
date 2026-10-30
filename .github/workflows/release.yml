@@ -16,7 +16,6 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Lint
-        continue-on-error: true
         run: shellcheck pacote/edge-agent.sh pacote/build-deb.sh
 
       - name: Build
