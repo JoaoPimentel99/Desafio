@@ -49,4 +49,10 @@
     state: started
     enabled: true
     daemon_reload: true
-  ignore_errors: true
+
+- name: Confirma que o agente continua rodando
+  ansible.builtin.service_facts:
+  register: edge_agent_services
+  until: edge_agent_services.ansible_facts.services['edge-agent.service'].state == 'running'
+  retries: 5
+  delay: 3
