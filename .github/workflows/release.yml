@@ -12,12 +12,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      DEB_SIGNING_KEY: ${{ secrets.DEB_SIGNING_KEY }}
     steps:
-      - uses: actions/checkout@main
-        with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/checkout@v4
 
       - name: Lint
         continue-on-error: true
