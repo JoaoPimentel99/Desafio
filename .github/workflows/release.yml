@@ -30,7 +30,11 @@ jobs:
           else
             echo "version=0.0.0+git${SHA:0:7}" >> "$GITHUB_OUTPUT"
           fi
-          ./pacote/build-deb.sh "$VERSION"
+      
+      - name: Build
+        env:
+          VERSION: ${{ steps.versao.outputs.version }}
+        run: ./pacote/build-deb.sh "$VERSION"    
 
       - uses: actions/upload-artifact@main
         with:
