@@ -4,12 +4,10 @@
     owner: root
     group: root
     mode: "0644"
-    #
-    #
-  content: |
-    # Gerenciado pelo Ansible
-    PermitRootLogin no
-    PasswordAuthentication no
-  validate: sshd -t -f %s
-when: ansible_facts['distribution'] == 'Ubuntu'
-notify: Reinicia o ssh
+    content: |
+      # Gerenciado pelo Ansible
+      PermitRootLogin no
+      PasswordAuthentication no
+    validate: sshd -t -f %s
+  when: ansible_facts['distribution'] == 'Ubuntu'
+  notify: Reinicia o ssh
