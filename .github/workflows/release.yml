@@ -18,9 +18,18 @@ jobs:
       - name: Lint
         run: shellcheck pacote/edge-agent.sh pacote/build-deb.sh
 
-      - name: Build
+      - name: Define a versao
+        id: versao
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+          SHA: ${{ github.sha }}
         run: |
-          VERSION=${{ github.ref }}
+          if [ "$REF_TYPE" = "tag" ]; then
+            echo "version=${REF_NAME#v}" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=0.0.0+git${SHA:0:7}" >> "$GITHUB_OUTPUT"
+          fi
           ./pacote/build-deb.sh "$VERSION"
 
       - uses: actions/upload-artifact@main
